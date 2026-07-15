@@ -26,7 +26,8 @@ Official repository for the paper *"EEG-based Motor Imagery empowered by Subject
 - [Datasets](#datasets)
 - [Results](#results)
 - [Usage](#usage)
-- [License](#license)
+- [Citation](#citation)
+- [Contact](#contact)
 
 ---
 
@@ -50,7 +51,6 @@ The figure below shows an overview of the proposed MIRACLE architecture, compris
 - **(d) Multi-Task Classification (MTC) block** — two classification heads, one for Motor Imagery (MI) classification and one for Subject Identification (SI), trained jointly to improve generalization and subject-invariant/subject-aware feature learning.
 
 <p align="center">
-  <!-- PLACEHOLDER: replace this with the actual architecture image, e.g. assets/miracle_architecture.png -->
   <img src="img/Architecture.png" alt="MIRACLE architecture overview" width="800"/>
 </p>
 
@@ -71,26 +71,27 @@ The figure below shows an overview of the proposed MIRACLE architecture, compris
 │   ├── test_2b.npz
 │   ├── test_OpenBMI.npz             # created by preprocess_test_OpenBMI.py after merging the two downloaded parts
 │   └── test_PhysioNetMI.npz
-├── Results_2a/                      # >>> included with its own subfolder in the downloaded model weights archive <<<
-│   ├── MIRACLE_mean_data.pt
-│   ├── MIRACLE_std_data.pt
-│   ├── MIRACLE_seed71_validation_log.txt
-│   └── MIRACLE_seed71_best_model_fold{N}.pth
-├── Results_2b/                      # >>> included with its own subfolder in the downloaded model weights archive <<<
-│   ├── MIRACLE_mean_data.pt
-│   ├── MIRACLE_std_data.pt
-│   ├── MIRACLE_seed157_validation_log.txt
-│   └── MIRACLE_seed157_best_model_fold{N}.pth
-├── Results_OpenBMI/                 # >>> included with its own subfolder in the downloaded model weights archive <<<
-│   ├── MIRACLE_mean_data.pt
-│   ├── MIRACLE_std_data.pt
-│   ├── MIRACLE_seed149_validation_log.txt
-│   └── MIRACLE_seed149_best_model_fold{N}.pth
-└── Results_PhysioNetMI/             # >>> included with its own subfolder in the downloaded model weights archive <<<
-    ├── MIRACLE_mean_data.pt
-    ├── MIRACLE_std_data.pt
-    ├── MIRACLE_seed131_validation_log.txt
-    └── MIRACLE_seed131_best_model_fold{N}.pth
+└── Weights_Models/                  # >>> downloaded model weights archive extracts here, with these subfolders already included <<<
+    ├── Results_2a/
+    │   ├── MIRACLE_mean_data.pt
+    │   ├── MIRACLE_std_data.pt
+    │   ├── MIRACLE_seed71_validation_log.txt
+    │   └── MIRACLE_seed71_best_model_fold{N}.pth
+    ├── Results_2b/
+    │   ├── MIRACLE_mean_data.pt
+    │   ├── MIRACLE_std_data.pt
+    │   ├── MIRACLE_seed157_validation_log.txt
+    │   └── MIRACLE_seed157_best_model_fold{N}.pth
+    ├── Results_OpenBMI/
+    │   ├── MIRACLE_mean_data.pt
+    │   ├── MIRACLE_std_data.pt
+    │   ├── MIRACLE_seed149_validation_log.txt
+    │   └── MIRACLE_seed149_best_model_fold{N}.pth
+    └── Results_PhysioNetMI/
+        ├── MIRACLE_mean_data.pt
+        ├── MIRACLE_std_data.pt
+        ├── MIRACLE_seed131_validation_log.txt
+        └── MIRACLE_seed131_best_model_fold{N}.pth
 ```
 
 ## Requirements
@@ -111,9 +112,12 @@ pip install -r requirements.txt
 
 ## Download
 
-Since the pretrained MIRACLE model weights and the preprocessed test datasets are not hosted in this repository, they must be downloaded from the [Releases](https://github.com/MiviaLab/MIRACLE/releases) page before running the test scripts. <!-- PLACEHOLDER: replace with the actual release/download link -->
+Since the pretrained MIRACLE model weights and the preprocessed test datasets are not hosted in this repository, they must be downloaded from the corresponding release before running the test scripts:
 
-- **Model weights**: distributed as a single archive that already contains the correct subfolder structure (`Results_2a/`, `Results_2b/`, `Results_OpenBMI/`, `Results_PhysioNetMI/`). Simply extract it in the repository root — no manual reorganization needed.
+- 🔗 **[Model weights release](https://github.com/MiviaLab/MIRACLE/releases/tag/Tag_Trained_Models)**
+- 🔗 **[Test sets release](https://github.com/MiviaLab/MIRACLE/releases/tag/Tag_Test_Sets)**
+
+- **Model weights**: distributed as a single archive that already contains the correct subfolder structure (`Weights_Models/Results_2a/`, `Weights_Models/Results_2b/`, `Weights_Models/Results_OpenBMI/`, `Weights_Models/Results_PhysioNetMI/`). Simply extract it in the repository root — no manual reorganization needed.
 - **Test datasets**: distributed as individual `.npz` files. Create a `Test_Sets/` folder in the repository root (if not already present) and place all downloaded test files directly inside it (flat, no subfolders):
 
 ```
@@ -171,6 +175,8 @@ The tables below report the per-subject classification accuracy (%) obtained on 
 | 521 | 82.99 | 63.19 | 94.10 | 77.78 | 61.46 | 69.10 | 88.54 | 84.38 | 81.25 | 78.09 |
 | *Average* | *85.69* | *63.19* | *94.42* | *78.00* | *57.64* | *67.34* | *86.24* | *85.72* | *80.43* | *77.63* |
 
+> Values are per-subject classification accuracy (%) on the MI task test set. The bolded row (seed **71**) is the one whose model weights are provided via the [Download](#download) link and used in the [Usage](#usage) example commands below.
+
 ### Dataset 2b (α = 0.01)
 
 | Seed | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 | S9 | **Average** |
@@ -191,7 +197,7 @@ The tables below report the per-subject classification accuracy (%) obtained on 
 | 521 | 81.25 | 73.57 | 85.00 | 95.63 | 97.81 | 86.25 | 92.81 | 95.31 | 87.81 | 88.38 |
 | *Average* | *78.37* | *71.99* | *83.88* | *94.49* | *97.94* | *86.27* | *92.23* | *96.14* | *87.95* | *87.70* |
 
-> Values are per-subject classification accuracy (%) on the MI task test set. The bolded row in each table is the seed whose model weights are provided via the [Download](#download) link and used in the [Usage](#usage) example commands below.
+> Values are per-subject classification accuracy (%) on the MI task test set. The bolded row (seed **157**) is the one whose model weights are provided via the [Download](#download) link and used in the [Usage](#usage) example commands below.
 
 ### Dataset OpenBMI (α = 0.001)
 
@@ -252,6 +258,8 @@ The tables below report the per-subject classification accuracy (%) obtained on 
 | S53 | 79.50 | 80.50 | 79.00 | 82.00 | 80.00 | 79.50 | 79.50 | **76.00** | 79.00 | 78.50 | 80.50 | 78.00 | 82.00 | 84.00 | **79.86** |
 | S54 | 75.50 | 75.00 | 76.00 | 73.00 | 72.00 | 74.50 | 72.00 | **72.50** | 73.00 | 72.50 | 74.00 | 76.00 | 74.50 | 71.00 | **73.68** |
 | *Average* | *84.98* | *84.76* | *84.91* | *84.89* | *84.91* | *84.42* | *85.19* | **85.58** | *85.12* | *84.26* | *85.20* | *85.56* | *84.91* | *85.21* | ***84.99*** |
+
+> Values are per-subject classification accuracy (%) on the MI task test set; subjects are listed as rows and seeds as columns (the opposite orientation of the BCI IV 2a/2b tables above, given the larger number of subjects). The bolded column (seed **149**) is the one whose model weights are provided via the [Download](#download) link and used in the [Usage](#usage) example commands below.
 
 ### Dataset PhysioNetMI (α = 0.1)
 
@@ -365,7 +373,7 @@ The tables below report the per-subject classification accuracy (%) obtained on 
 | S106 | 66.96 | 58.04 | 85.71 | 65.18 | 73.21 | **71.43** | 72.32 | 65.18 | 79.46 | 65.18 | 72.32 | 71.43 | 71.43 | 73.21 | **70.79** |
 | *Average* | *80.57* | *80.33* | *81.85* | *82.08* | *81.43* | **82.47** | *80.27* | *81.78* | *81.92* | *81.28* | *82.40* | *80.80* | *81.09* | *82.09* | ***81.45*** |
 
-> For OpenBMI and PhysioNetMI, subjects are listed as rows and seeds as columns (the opposite orientation of the BCI IV 2a/2b tables above, given the larger number of subjects). The bolded column in each table (seed **149** for OpenBMI, seed **131** for PhysioNetMI) is the best-performing configuration. Values are per-subject classification accuracy (%) on the MI task test set.
+> Values are per-subject classification accuracy (%) on the MI task test set; subjects are listed as rows and seeds as columns (the opposite orientation of the BCI IV 2a/2b tables above, given the larger number of subjects). The bolded column (seed **131**) is the one whose model weights are provided via the [Download](#download) link and used in the [Usage](#usage) example commands below.
 
 ## Usage
 
@@ -375,7 +383,7 @@ Once models and datasets have been downloaded and placed in the correct folders 
 python test_motor_imagery.py \
   --test_set Test_Sets/test_2a.npz \
   --name_model MIRACLE \
-  --saved_path Results_2a \
+  --saved_path Weights_Models/Results_2a \
   --seed 71 \
   --paradigm Cross
 ```
@@ -384,7 +392,7 @@ python test_motor_imagery.py \
 python test_motor_imagery.py \
   --test_set Test_Sets/test_2b.npz \
   --name_model MIRACLE \
-  --saved_path Results_2b \
+  --saved_path Weights_Models/Results_2b \
   --seed 157 \
   --paradigm Cross
 ```
@@ -393,7 +401,7 @@ python test_motor_imagery.py \
 python test_motor_imagery.py \
   --test_set Test_Sets/test_OpenBMI.npz \
   --name_model MIRACLE \
-  --saved_path Results_OpenBMI \
+  --saved_path Weights_Models/Results_OpenBMI \
   --seed 149 \
   --paradigm Cross
 ```
@@ -402,7 +410,7 @@ python test_motor_imagery.py \
 python test_motor_imagery.py \
   --test_set Test_Sets/test_PhysioNetMI.npz \
   --name_model MIRACLE \
-  --saved_path Results_PhysioNetMI \
+  --saved_path Weights_Models/Results_PhysioNetMI \
   --seed 131 \
   --paradigm Cross
 ```

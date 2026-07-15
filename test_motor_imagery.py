@@ -14,7 +14,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--test_set', type=str, default='Test_Sets/test_2b.npz')
     parser.add_argument("--name_model", type=str, choices=available_network, default='MIRACLE')
-    parser.add_argument('--saved_path', type=str, default='Results_2b')
+    parser.add_argument('--saved_path', type=str, default='Weights_Models/Results_2b')
     parser.add_argument('--device', type=str, default='cuda:0' if torch.cuda.is_available() else 'cpu')
     parser.add_argument('--seed', type=int, default=157)
     parser.add_argument('--paradigm', type=str, choices=available_paradigm, default='Cross')

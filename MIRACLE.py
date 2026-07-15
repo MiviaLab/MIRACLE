@@ -69,7 +69,7 @@ class SENet(nn.Module):
         y = self.sigmoid(self.fc2(y)).view(batch, feature_maps, 1, 1)  # Sigmoid e reshape
         return x * y  # Applicazione dei pesi ai canali originali
 
-class TSConv_SE(nn.Sequential):
+class FSMS(nn.Sequential):
     def __init__(self, nCh, F, C1, C2, D, P1, P2, Pc, reduction=2) -> None:
         super().__init__(
             nn.Conv2d(1, F, (1, C1), padding='same', bias=False),
@@ -106,14 +106,29 @@ class MIRACLE(nn.Module):
         self.b_preds = b_preds
         self.subjects=subjects
         assert len(F) == len(C1), 'The length of F and C1 should be equal.'
+        
+        # ------------- FSMS Block ------------- #
+        
         self.mstsconv = nn.ModuleList([
-            TSConv_SE(self.nCh, F[b], C1[b], C2, D, P1, P2, Pc, reduction)
+            FSMS(self.nCh, F[b], C1[b], C2, D, P1, P2, Pc, reduction)
             for b in range(len(F))
         ])
         self.rearrange = Rearrange('b d 1 t -> b t d')   # b x 18 x 1 x 17 e le feature maps diventano le nostra informazioni per ogni token (la lista di token diventa 17)
+        
+        # ------------- FSGT Block ------------- #
+        
         self.se_layer = SENet(D*sum(F), reduction=reduction)
         branch_linear_in = self._forward_flatten(cat=False)
+        seq_len, d_model = self._forward_mstsconv().shape[1:3] # type: ignore
+        self.transformer = Transformer(seq_len, d_model, nhead, ff_ratio, Pt, layers)
+
+        # ------------- MTC Block ------------- #
         
+        linear_in = self._forward_flatten().shape[1] # type: ignore
+        self.last_head_task = ClsHead(linear_in, num_classes)
+        self.last_head_subject = ClsHead(linear_in, subjects)
+        
+        # ------------- Auxiliary Loss ------------- #
         self.branch_head = nn.ModuleList([
             ClsHead(branch_linear_in[b].shape[1], num_classes)
             for b in range(len(F))
@@ -122,13 +137,7 @@ class MIRACLE(nn.Module):
             ClsHead(branch_linear_in[b].shape[1], subjects)
             for b in range(len(F))
         ])
-        
-        seq_len, d_model = self._forward_mstsconv().shape[1:3] # type: ignore
-        self.transformer = Transformer(seq_len, d_model, nhead, ff_ratio, Pt, layers)
-
-        linear_in = self._forward_flatten().shape[1] # type: ignore
-        self.last_head_task = ClsHead(linear_in, num_classes)
-        self.last_head_subject = ClsHead(linear_in, subjects)
+        # ------------------------------------------ # 
 
     def _forward_mstsconv(self, cat = True):
         x = torch.randn(1, 1, self.nCh, self.nTime)
