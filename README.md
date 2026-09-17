@@ -4,20 +4,6 @@ Official repository for the paper *"EEG-based Motor Imagery empowered by Subject
 
 > **Note:** This repository contains only the code required to **test/evaluate** the pretrained MIRACLE model. Pretrained model weights and the preprocessed test datasets are **not included** in this repository and must be downloaded separately (see [Download](#download) below).
 
----
-
-## Table of Contents
-
-- [Overview](#overview)
-- [MIRACLE Architecture](#miracle-architecture)
-- [Repository Structure](#repository-structure)
-- [Requirements](#requirements)
-- [Download](#download)
-- [Datasets](#datasets)
-- [Results](#results)
-- [Usage](#usage)
-
----
 <a name="overview"></a>
 ## Overview
 
