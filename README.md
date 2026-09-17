@@ -18,7 +18,7 @@ Official repository for the paper *"EEG-based Motor Imagery empowered by Subject
 - [Usage](#usage)
 
 ---
-
+<a name="overview"></a>
 ## Overview
 
 MIRACLE is designed to improve Motor Imagery decoding from EEG signals by leveraging subject-specific information through a multi-task learning framework, combined with a multi-scale, frequency-selective feature extraction strategy.
@@ -29,6 +29,7 @@ This repository provides the **test/inference pipeline** used to reproduce the e
 - **OpenBMI**
 - **PhysioNetMI**
 
+<a name="miracle-architecture"></a>
 ## MIRACLE Architecture
 
 The figure below shows an overview of the proposed MIRACLE architecture, comprising:
@@ -44,6 +45,8 @@ The figure below shows an overview of the proposed MIRACLE architecture, compris
 
 <p align="center"><em>Figure: Overview of the proposed MIRACLE architecture — (a) normalization, (b) FSMS block, (c) FSGT block, (d) MTC block.</em></p>
 
+
+<a name="repository-structure"></a>
 ## Repository Structure
 
 ```
@@ -80,7 +83,7 @@ The figure below shows an overview of the proposed MIRACLE architecture, compris
         ├── MIRACLE_seed131_validation_log.txt
         └── MIRACLE_seed131_best_model_fold{N}.pth
 ```
-
+<a name="requirements"></a>
 ## Requirements
 
 - Python 3.9
@@ -97,6 +100,7 @@ Install all dependencies with:
 pip install -r requirements.txt
 ```
 
+<a name="download"></a>
 ## Download
 
 The pretrained MIRACLE model weights and the preprocessed test datasets are hosted separately on Hugging Face.
@@ -152,6 +156,7 @@ After both downloads, the required files will be organized as:
 
 No extraction, file reorganization, or additional preprocessing is required. The folder layout already should match [Repository Structure](#repository-structure) above.
 
+<a name="datasets"></a>
 ## Datasets
 
 Evaluation is performed on the following public EEG Motor Imagery benchmarks:
@@ -165,6 +170,7 @@ Only the **test partitions** required to reproduce the paper's results are provi
 
 During training, the MI and SI task losses are combined with a weighting coefficient **α**, set to **0.001** for Dataset 2a, **0.01** for Dataset 2b, **0.001** for OpenBMI, and **0.1** for PhysioNetMI.
 
+<a name="results"></a>
 ## Results
 
 The tables below report the per-subject classification accuracy (%) obtained on the test sets, across **all the seeds evaluated** for each dataset. **For simplicity, only the model weights of the best-performing seed per dataset are made available for download** (highlighted in bold below): seed **71** for Dataset 2a, seed **157** for Dataset 2b, seed **149** for OpenBMI, and seed **131** for PhysioNetMI.
@@ -389,6 +395,7 @@ The tables below report the per-subject classification accuracy (%) obtained on 
 
 > Values are per-subject classification accuracy (%) on the MI task test set; subjects are listed as rows and seeds as columns (the opposite orientation of the BCI IV 2a/2b tables above, given the larger number of subjects). The bolded column (seed **131**) is the one whose model weights are provided via the [Download](#download) link and used in the [Usage](#usage) example commands below.
 
+<a name="usage"></a>
 ## Usage
 
 Once models and datasets have been downloaded, run the test script specifying the test set, the saved-results folder, and the seed of the model weights to evaluate:
