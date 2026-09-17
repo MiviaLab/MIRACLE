@@ -1,15 +1,5 @@
 # EEG-based Motor Imagery empowered by Subject Identification in a Multi-task and Multi-scale framework
 
-Simone Bove, Martino Giaquinto*, *Member, IEEE*, Gennaro Percannella, *Member, IEEE*, Alessia Saggese, *Member, IEEE*, Mario Vento, *Member, IEEE*
-
-All the authors are with the Department of Information and Electrical Engineering and Applied Mathematics (DIEM), University of Salerno, Fisciano, 84084 Italy.
-
-\*Corresponding author: mgiaquinto@unisa.it
-
-All the authors contributed equally to this work.
-
----
-
 Official repository for the paper *"EEG-based Motor Imagery empowered by Subject Identification in a Multi-task and Multi-scale framework"*, introducing **MIRACLE**, a multi-task, multi-scale deep learning architecture for EEG-based Motor Imagery (MI) classification jointly trained with a Subject Identification (SI) auxiliary task.
 
 > **Note:** This repository contains only the code required to **test/evaluate** the pretrained MIRACLE model. Pretrained model weights and the preprocessed test datasets are **not included** in this repository and must be downloaded separately (see [Download](#download) below).
@@ -26,8 +16,6 @@ Official repository for the paper *"EEG-based Motor Imagery empowered by Subject
 - [Datasets](#datasets)
 - [Results](#results)
 - [Usage](#usage)
-- [Citation](#citation)
-- [Contact](#contact)
 
 ---
 
@@ -416,15 +404,3 @@ python test_motor_imagery.py \
 ```
 
 Results (F1, accuracy, balanced accuracy, and Cohen's kappa for both the MI and SI tasks) are saved to `{saved_path}/Final_results_{name_model}_seed{seed}.json`.
-
-> **Note:** This paper is currently under review. Citation details will be added once the work is accepted and published.
-
-## Citation
-
-If you find this repository useful in your research, please consider citing our paper (citation will be added after publication).
-
----
-
-## Contact
-
-For questions or further information, please contact the authors of the paper.
