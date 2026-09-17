@@ -52,14 +52,13 @@ The figure below shows an overview of the proposed MIRACLE architecture, compris
 ├── requirements.txt
 ├── MIRACLE.py                       # MIRACLE model definition (FSMS, FSGT, MTC blocks)
 ├── test_motor_imagery.py            # Test / inference entry point
-├── preprocess_test_OpenBMI.py       # Merges the split OpenBMI test set into a single .npz file
 ├── utils.py                         # Data loading, normalization, metrics, losses, network factory
-├── Test_Sets/                       # >>> downloaded test data goes here (flat .npz files, no subfolders) <<<
+├── Test_Sets/                       
 │   ├── test_2a.npz
 │   ├── test_2b.npz
-│   ├── test_OpenBMI.npz             # created by preprocess_test_OpenBMI.py after merging the two downloaded parts
+│   ├── test_OpenBMI.npz             
 │   └── test_PhysioNetMI.npz
-└── Weights_Models/                  # >>> downloaded model weights archive extracts here, with these subfolders already included <<<
+└── Weights_Models/                 
     ├── Results_2a/
     │   ├── MIRACLE_mean_data.pt
     │   ├── MIRACLE_std_data.pt
@@ -100,31 +99,58 @@ pip install -r requirements.txt
 
 ## Download
 
-Since the pretrained MIRACLE model weights and the preprocessed test datasets are not hosted in this repository, they must be downloaded from the corresponding release before running the test scripts:
+The pretrained MIRACLE model weights and the preprocessed test datasets are hosted separately on Hugging Face.
 
-- 🔗 **[Model weights release](https://github.com/MiviaLab/MIRACLE/releases/tag/Tag_Trained_Models)**
-- 🔗 **[Test sets release](https://github.com/MiviaLab/MIRACLE/releases/tag/Tag_Test_Sets)**
+First, install the Hugging Face CLI (if not already installed):
 
-- **Model weights**: distributed as a single archive that already contains the correct subfolder structure (`Weights_Models/Results_2a/`, `Weights_Models/Results_2b/`, `Weights_Models/Results_OpenBMI/`, `Weights_Models/Results_PhysioNetMI/`). Simply extract it in the repository root — no manual reorganization needed.
-- **Test datasets**: distributed as individual `.npz` files. Create a `Test_Sets/` folder in the repository root (if not already present) and place all downloaded test files directly inside it (flat, no subfolders):
-
-```
-Test_Sets/test_2a.npz
-Test_Sets/test_2b.npz
-Test_Sets/test_OpenBMI_first.npz
-Test_Sets/test_OpenBMI_last.npz
-Test_Sets/test_PhysioNetMI.npz
+```bash
+pip install -U huggingface_hub
 ```
 
-> **Note on the OpenBMI test set:** since it exceeds 2GB, it is distributed split into two parts, `test_OpenBMI_first.npz` and `test_OpenBMI_last.npz`. After placing both inside `Test_Sets/`, merge them into a single `test_OpenBMI.npz` file by running:
->
-> ```bash
-> python preprocess_test_OpenBMI.py
-> ```
->
-> This concatenates the two parts into `Test_Sets/test_OpenBMI.npz` and automatically deletes the two original split files. All other test sets (2a, 2b, PhysioNetMI) are ready to use as downloaded, with no preprocessing needed.
+### Test datasets
 
-Once everything is extracted and placed as described, the folder layout should match [Repository Structure](#repository-structure) above.
+Download all preprocessed test datasets directly from Hugging Face:
+
+```bash
+hf download qwgqwgfqdg43/MI_Datasets --repo-type dataset --local-dir .
+```
+
+This automatically downloads the test sets into the required directory structure:
+
+```text
+Test_Sets/
+├── test_2a.npz
+├── test_2b.npz
+├── test_OpenBMI.npz
+└── test_PhysioNetMI.npz
+```
+
+### Pretrained model weights
+
+Download the pretrained model weights from Hugging Face:
+
+```bash
+hf download qwgqwgfqdg43/MIRACLE --local-dir .
+```
+
+After both downloads, the required files will be organized as:
+
+```text
+.
+├── Test_Sets/
+│   ├── test_2a.npz
+│   ├── test_2b.npz
+│   ├── test_OpenBMI.npz
+│   └── test_PhysioNetMI.npz
+│
+└── Weights_Models/
+    ├── Results_2a/
+    ├── Results_2b/
+    ├── Results_OpenBMI/
+    └── Results_PhysioNetMI/
+```
+
+No extraction, file reorganization, or additional preprocessing is required. The folder layout already should match [Repository Structure](#repository-structure) above.
 
 ## Datasets
 
@@ -141,7 +167,7 @@ During training, the MI and SI task losses are combined with a weighting coeffic
 
 ## Results
 
-The tables below report the per-subject classification accuracy (%) obtained on the test sets, across **all the seeds evaluated** for each dataset. **For simplicity, only the model weights of the best-performing seed per dataset are made available for download** (highlighted in bold below): seed **71** for Dataset 2a and seed **157** for Dataset 2b.
+The tables below report the per-subject classification accuracy (%) obtained on the test sets, across **all the seeds evaluated** for each dataset. **For simplicity, only the model weights of the best-performing seed per dataset are made available for download** (highlighted in bold below): seed **71** for Dataset 2a, seed **157** for Dataset 2b, seed **149** for OpenBMI, and seed **131** for PhysioNetMI.
 
 ### Dataset 2a (α = 0.001)
 
@@ -365,7 +391,7 @@ The tables below report the per-subject classification accuracy (%) obtained on 
 
 ## Usage
 
-Once models and datasets have been downloaded and placed in the correct folders (remember to merge the OpenBMI test set first, see [Download](#download)), run the test script specifying the test set, the saved-results folder, and the seed of the model weights to evaluate:
+Once models and datasets have been downloaded, run the test script specifying the test set, the saved-results folder, and the seed of the model weights to evaluate:
 
 ```bash
 python test_motor_imagery.py \
